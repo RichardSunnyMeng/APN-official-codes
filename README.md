@@ -1,2 +1,3 @@
-# APN
-Purify the artifact features for cross-domain generated image detection
+# xxxxxxxx
+xxxxxxxxxxxxxxxxxxxxx
+Update after the paper acceptance (Submitted to CVPR 2024). 
