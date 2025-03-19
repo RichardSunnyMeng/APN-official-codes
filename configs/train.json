@@ -1,0 +1,150 @@
+{
+    "training_cfg": {
+        "running_epoch": 10,
+        "log_path": "./experiments/try"
+    },
+
+    "models": {
+        "MainModel": {
+            "device": "cuda",
+            "model_cfg": {
+                "backbone_s": "convnext_base",
+                "backbone_f": "resnet18",
+                "feature_dim": 256,
+                "num_proposal": 15,
+                "base_ema": false,
+                "img_size": 224,
+                "blip": true
+            },
+            "data": {
+                "dataset_type": "ImgDataset",
+                "data_json": ".data/GenImage/stable_diffusion_v_1_4/stable_diffusion_v_1_4_train.json",
+                "preprocess": {
+                    "norm": {
+                        "mean": 0,
+                        "std": 1
+                    },
+                    "random_crop": {
+                        "target_size": 224
+                    }
+                },
+                "data_aug": {}
+            },
+            "data_loader": {
+                "running_iter": 1,
+                "batch_size": 24,
+                "shuffle": true,
+                "collate_fn": "collate_fn",
+                "num_workers": 4
+            },
+            "loss": {
+                "CELoss": {
+                    "scale": 1,
+                    "kwargs": {}
+                },
+                "GenLoss": {
+                    "scale": 1,
+                    "kwargs": {}
+                },
+                "SELossSingle1": {
+                    "scale": 1,
+                    "kwargs": {}
+                },
+                "SELossSingle2": {
+                    "scale": 1,
+                    "kwargs": {}
+                },
+                "SELossSingle3": {
+                    "scale": 1,
+                    "kwargs": {}
+                },
+                "BandLoss": {
+                    "scale": 1,
+                    "kwargs": {}
+                },
+                "PullLoss": {
+                    "scale": 1,
+                    "kwargs": {}
+                },
+                "MILoss": {
+                    "scale": 1,
+                    "kwargs": {}
+                }
+            },
+            "optimizer": {
+                "type": "Adam",
+                "kwargs": {},
+                "groups": {
+                    "others": 0.0001, 
+                    "spital_branch.space_base": 0.0000001
+                }
+            },
+            "scheduler_warmup": {
+                "type": "LinearLR",
+                "kwargs": {"total_iters": 20}
+            },
+            "scheduler_decay": {
+                "type": "StepLR",
+                "kwargs": {"step_size": 30000}
+            },
+            "save": {
+                "ckpt_path": "./experiments/try/models",
+                "save_start_epoch": 0,
+                "save_interval": 1
+            }
+        },
+        
+        "CLUB": {
+            "device": "cuda",
+            "model_cfg": {
+                "x_dim": 256,
+                "y_dim": 256,
+                "hidden_size": 256
+            },
+            "data": {
+                "dataset_type": "ImgDataset",
+                "data_json": ".data/GenImage/stable_diffusion_v_1_4/stable_diffusion_v_1_4_train.json",
+                "preprocess": {
+                    "norm": {
+                        "mean": 0,
+                        "std": 1
+                    },
+                    "random_crop": {
+                        "target_size": 224
+                    }
+                },
+                "data_aug": {}
+            },
+            "data_loader": {
+                "running_iter": 3,
+                "batch_size": 24,
+                "shuffle": true,
+                "collate_fn": "collate_fn",
+                "num_workers": 4
+            },
+            "loss": {
+                "MILearningLoss": {
+                    "scale": 1,
+                    "kwargs": {}
+                }
+            },
+            "optimizer": {
+                "type": "Adam",
+                "kwargs": {"lr": 0.00001}
+            },
+            "scheduler_warmup": {
+                "type": "LinearLR",
+                "kwargs": {"total_iters": 20}
+            },
+            "scheduler_decay": {
+                "type": "StepLR",
+                "kwargs": {"step_size": 20000}
+            },
+            "save": {
+                "ckpt_path": "./experiments/try/models",
+                "save_start_epoch": 50,
+                "save_interval": 1
+            }
+        }
+    }
+}
