@@ -1,0 +1,64 @@
+{
+    "log_path": "./experiments/try",
+    "models": {
+        "MainModel": {
+            "device": "cuda",
+            "model_cfg": {
+                "backbone_s": "convnext_base",
+                "backbone_f": "resnet18",
+                "feature_dim": 256,
+                "num_proposal": 15,
+                "base_ema": false,
+                "img_size": 224,
+                "blip": false
+            },
+            "checkpoint": "./experiments/try/models/MainModel_epoch_9.pth",
+            "metrics": {
+                "method": "eval_base",
+                "kwargs": 
+                {
+                    "binary": true,
+                    "thr": 0.5
+                }
+            }
+            
+        }
+    },
+
+    "data_cfg": {
+        "dataset": {
+            "dataset_type": "ImgDataset",
+            "preprocess": {
+                "norm": {
+                    "mean": 0,
+                    "std": 1
+                },
+                "random_crop": {
+                    "target_size": 224
+                }
+            },
+            "data_aug": {}
+        },
+        "data_loader": {
+            "batch_size": 96,
+            "shuffle": false,
+            "collate_fn": "collate_fn"
+        }
+    },
+    
+    "eval_dataset": {
+        "in": {
+            "stable_diffusion_v_1_4": "./data/GenImage/stable_diffusion_v_1_4/stable_diffusion_v_1_4_val.json"
+        },
+        
+        "out": {
+            "stable_diffusion_v_1_5": "./data/GenImage/stable_diffusion_v_1_5/stable_diffusion_v_1_5_val.json",
+            "VQDM": "./data/GenImage/VQDM/VQDM_val.json",
+            "wukong": "./data/GenImage/wukong/wukong_val.json",
+            "Midjourney": "./data/GenImage/Midjourney/Midjourney_val.json",
+            "glide": "./data/GenImage/glide/glide_val.json",
+            "BigGAN": "./data/GenImage/BigGAN/BigGAN_val.json",
+            "ADM": "./data/GenImage/ADM/ADM_val.json"
+        }
+    }
+}
