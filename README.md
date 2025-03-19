@@ -7,3 +7,4 @@ conda activate APN
 pip install -r requirements.txt
 
 sh scripts/run.sh
+sh scripts/eval.sh
